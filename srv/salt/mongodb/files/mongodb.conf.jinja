@@ -1,0 +1,34 @@
+# This file is managed by Salt!
+{% set mdb = pillar.get('mongodb', {}) -%}
+
+
+bind_ip = {{ grains['ip_interfaces']['eth0'][0] }}
+port = {{ mdb.settings.port }}
+dbpath = {{ mdb.db_path }}
+logpath = {{ mdb.log_path }}/mongodb.log
+logappend = {{ mdb.log_append }}
+
+replSet = shard{{ grains['shard'] }}RS
+
+{% if mdb.storage_engine -%}
+storageEngine = {{ mdb.storage_engine }}
+{% endif %}
+
+{% if mdb.config_svr == True %}
+configsvr=true
+{% endif %}
+
+{% if mdb.shard_svr == True %}
+shardsvr=true
+{% endif %}
+
+{% if mdb.rest == True %}
+rest=true
+{% endif %}
+
+{% if 'set_parameter' in mdb -%}
+  {% for k,v in mdb.set_parameter.iteritems() -%}
+setParameter = {{ k }}={{ v }}
+  {% endfor -%}
+{% endif -%}
+

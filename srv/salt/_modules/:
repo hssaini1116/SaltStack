@@ -1,0 +1,16 @@
+from  slacker import Slacker
+
+
+def slackNotification():
+
+    slack = Slacker('xoxp-226792929462-225250171360-259658264771-e6ce9af604e97e3f6348de3ed037d08c')
+    slack.chat.post_message('#devops', "message is working")   
+
+     return slack
+
+
+
+#def call():
+
+  #  s = slackNotification()
+ #   s.chat.post_message('#devops', "message is working")

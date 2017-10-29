@@ -1,0 +1,7 @@
+{% set ms = pillar.get('mongos', {}) -%}
+
+port={{ ms.port }}
+logpath={{ ms.log_file }}
+configdb={{ ms.config_svrs_repSet }}
+
+

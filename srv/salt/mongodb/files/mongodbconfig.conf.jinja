@@ -1,0 +1,35 @@
+{% from "mongodb/map.jinja" import mdbconfig with context -%}
+# This file is managed by Salt!
+
+bind_ip = {{ grains['ip_interfaces']['eth0'][0] }}
+port = {{ mdbconfig.settings.port }}
+dbpath = {{ mdbconfig.db_path }}
+logpath = {{ mdbconfig.log_path }}/mongodb.log
+logappend = {{ mdbconfig.log_append }}
+
+{% if mdbconfig.replica_set.name -%}
+replSet = {{ mdbconfig.replica_set.name }}
+{% endif %}
+
+{% if mdbconfig.storage_engine -%}
+storageEngine = {{ mdbconfig.storage_engine }}
+{% endif %}
+
+{% if mdbconfig.config_svr == True %}
+configsvr=true
+{% endif %}
+
+{% if mdbconfig.shard_svr == True %}
+shardsvr=true
+{% endif %}
+
+{% if mdbconfig.rest == True %}
+rest=true
+{% endif %}
+
+{% if 'set_parameter' in mdbconfig -%}
+  {% for k,v in mdbconfig.set_parameter.iteritems() -%}
+setParameter = {{ k }}={{ v }}
+  {% endfor -%}
+{% endif -%}
+
